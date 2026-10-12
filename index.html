@@ -1,0 +1,831 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Эко-справочник</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,500;7..72,600&family=Onest:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0d2b3e; --navy-2:#123a52; --navy-ink:#e8f1f5; --amber:#f2a93b;
+  --bg:#f5f7f6; --surface:#ffffff; --surface-2:#eef2f1; --ink:#14232c; --muted:#5b6b73;
+  --line:#dbe3e1; --accent:#0f7a6c; --accent-ink:#ffffff; --danger:#c23b2b; --warn:#b86e00; --ok:#2e7d4f;
+  --mark:#ffe08a; --shadow:0 1px 2px rgba(13,43,62,.06),0 4px 16px rgba(13,43,62,.06);
+  --radius:14px; --font:"Onest",system-ui,sans-serif; --serif:"Literata",Georgia,serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0b161d; --surface:#111f28; --surface-2:#172833; --ink:#e3ecef; --muted:#93a6ae;
+    --line:#22363f; --accent:#3cc0a8; --accent-ink:#06221d; --danger:#ff7a6a; --warn:#f2a93b; --ok:#5fcf8d;
+    --mark:#6b5414; --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.25); --navy:#08202e; --navy-2:#0d2b3e;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0b161d; --surface:#111f28; --surface-2:#172833; --ink:#e3ecef; --muted:#93a6ae;
+  --line:#22363f; --accent:#3cc0a8; --accent-ink:#06221d; --danger:#ff7a6a; --warn:#f2a93b; --ok:#5fcf8d;
+  --mark:#6b5414; --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.25); --navy:#08202e; --navy-2:#0d2b3e;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 var(--font);min-height:100vh}
+a{color:var(--accent)}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--amber);outline-offset:2px;border-radius:6px}
+h1,h2,h3{font-family:var(--serif);font-weight:600;line-height:1.2;margin:0}
+.wrap{max-width:1180px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-left)) 0 max(16px,env(safe-area-inset-right))}
+.muted{color:var(--muted)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* header */
+header.top{background:var(--navy);color:var(--navy-ink);position:sticky;top:0;z-index:30;padding-top:env(safe-area-inset-top)}
+.top .wrap{display:flex;align-items:center;gap:16px;height:60px}
+.brand{display:flex;align-items:center;gap:10px;color:inherit;text-decoration:none;font-weight:700;white-space:nowrap}
+.brand svg{flex:none}
+nav.main{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;flex:1}
+nav.main::-webkit-scrollbar{display:none}
+nav.main a{color:#b9cdd6;text-decoration:none;padding:8px 12px;border-radius:9px;white-space:nowrap;font-weight:500}
+nav.main a:hover{color:#fff;background:rgba(255,255,255,.07)}
+nav.main a.on{color:#fff;background:rgba(255,255,255,.12)}
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);padding:8px 14px;border-radius:10px;cursor:pointer;font-weight:500;white-space:nowrap}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn.amber{background:var(--amber);color:#2a1a00;border-color:var(--amber)}
+.btn.ghost{background:transparent}
+.btn.danger{color:var(--danger)}
+.btn.sm{padding:5px 10px;font-size:13px;border-radius:8px}
+.top .btn.amber{flex:none}
+
+/* hero */
+.hero{background:var(--navy);color:var(--navy-ink);position:relative;overflow:hidden;padding:44px 0 56px}
+.hero svg.relief{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.hero .wrap{position:relative}
+.hero h1{font-size:clamp(30px,5vw,48px);color:#fff}
+.hero p.lead{max-width:620px;color:#b9cdd6;margin:10px 0 24px;font-size:16px}
+.bigsearch{display:flex;align-items:center;gap:10px;background:#fff;color:#14232c;border-radius:14px;padding:6px 6px 6px 16px;max-width:720px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.bigsearch input{flex:1;border:0;outline:0;background:transparent;font-size:17px;padding:10px 0;min-width:0;color:#14232c}
+.bigsearch kbd{font:12px var(--font);border:1px solid #ccd;border-radius:5px;padding:1px 6px;color:#667}
+.stats{display:flex;flex-wrap:wrap;gap:10px 28px;margin-top:26px}
+.stat b{display:block;font-size:26px;color:#fff;font-family:var(--serif)}
+.stat span{color:#9fb6c0;font-size:13px}
+.stat.warn b{color:var(--amber)}
+
+section.block{margin:34px 0}
+.block-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.block-head h2{font-size:22px}
+
+/* tiles */
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);cursor:pointer;display:flex;flex-direction:column;gap:8px;position:relative;text-align:left;transition:transform .15s,border-color .15s}
+.tile:hover{transform:translateY(-2px);border-color:var(--c)}
+.tile .ic{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;background:color-mix(in srgb,var(--c) 15%,transparent);color:var(--c)}
+.tile h3{font-size:17px}
+.tile p{margin:0;color:var(--muted);font-size:13.5px}
+.tile .count{position:absolute;top:14px;right:14px;font-size:13px;color:var(--muted);font-weight:600}
+.tile .folders{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+.tile .folders button{border:1px solid color-mix(in srgb,var(--c) 40%,var(--line));background:color-mix(in srgb,var(--c) 8%,transparent);color:var(--ink);border-radius:999px;padding:3px 10px;font-size:12.5px;cursor:pointer}
+.tile .folders button:hover{background:color-mix(in srgb,var(--c) 22%,transparent)}
+
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow)}
+.panel h3{font-size:17px;margin-bottom:10px}
+.mini{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-top:1px solid var(--line);cursor:pointer}
+.mini:first-of-type{border-top:0}
+.mini .t{font-weight:500}
+.mini .s{font-size:13px;color:var(--muted)}
+.dot{width:9px;height:9px;border-radius:50%;margin-top:7px;flex:none;background:var(--c,var(--accent))}
+.empty{color:var(--muted);text-align:center;padding:26px 10px}
+.start{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.start button{text-align:left;padding:16px;border-radius:12px;border:1px dashed var(--accent);background:color-mix(in srgb,var(--accent) 6%,transparent);cursor:pointer}
+.start b{display:block;margin-bottom:4px}
+
+/* catalog */
+.page-head{padding:26px 0 8px}
+.page-head h1{font-size:30px}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:14px 0}
+.seg{display:inline-flex;background:var(--surface-2);border-radius:11px;padding:3px;gap:2px;flex-wrap:wrap}
+.seg button{border:0;background:transparent;padding:6px 12px;border-radius:8px;cursor:pointer;font-weight:500;color:var(--muted)}
+.seg button.on{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
+.search{flex:1;min-width:220px;display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:11px;padding:0 12px}
+.search input{border:0;outline:0;background:transparent;padding:10px 0;flex:1;min-width:0}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 12px;cursor:pointer;font-size:13.5px;display:inline-flex;gap:6px;align-items:center}
+.chip i{font-style:normal;color:var(--muted);font-size:12px}
+.chip.on{background:var(--c,var(--accent));border-color:var(--c,var(--accent));color:#fff}
+.chip.on i{color:rgba(255,255,255,.8)}
+.chips.sub .chip{font-size:13px;padding:4px 11px}
+.layout{display:grid;grid-template-columns:250px 1fr;gap:20px;align-items:start;margin-bottom:40px}
+.side{position:sticky;top:76px;display:flex;flex-direction:column;gap:12px}
+.side label{font-size:12.5px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em;display:block;margin-bottom:4px}
+.side select,.field input,.field select,.field textarea{width:100%;border:1px solid var(--line);background:var(--surface);border-radius:9px;padding:8px 10px}
+.check{display:flex;gap:8px;align-items:center;font-size:14px;cursor:pointer}
+.tagcloud{display:flex;flex-wrap:wrap;gap:5px}
+.tag{border:0;background:var(--surface-2);color:var(--ink);border-radius:6px;padding:2px 8px;font-size:12.5px;cursor:pointer}
+.tag.on{background:var(--accent);color:var(--accent-ink)}
+.tag i{font-style:normal;color:var(--muted);margin-left:3px}
+.tag.on i{color:inherit;opacity:.75}
+.results-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.cards{display:flex;flex-direction:column;gap:12px}
+.card{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--c);border-radius:12px;padding:14px 16px;box-shadow:var(--shadow)}
+.card .meta{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:12.5px;color:var(--muted);align-items:center}
+.card h3{font-family:var(--font);font-size:16.5px;font-weight:600;margin:6px 0 4px;cursor:pointer}
+.card h3:hover{color:var(--accent)}
+.card p{margin:4px 0;font-size:14px}
+.card .snip{font-size:13px;color:var(--muted);background:var(--surface-2);border-radius:8px;padding:6px 9px;margin-top:6px}
+.card .foot{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:8px}
+.badge{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;border-radius:6px;padding:1px 8px;background:var(--surface-2);color:var(--muted)}
+.badge.kind{color:var(--c);background:color-mix(in srgb,var(--c) 12%,transparent)}
+.badge.review{color:var(--warn);background:color-mix(in srgb,var(--warn) 14%,transparent)}
+.badge.ok{color:var(--ok);background:color-mix(in srgb,var(--ok) 14%,transparent)}
+.badge.late{color:#fff;background:var(--danger)}
+.badge.soon{color:var(--warn);background:color-mix(in srgb,var(--warn) 16%,transparent)}
+.badge.task{color:var(--accent);background:color-mix(in srgb,var(--accent) 14%,transparent)}
+mark{background:var(--mark);color:inherit;border-radius:3px;padding:0 1px}
+.filters-toggle{display:none}
+
+/* drawer */
+.scrim{position:fixed;inset:0;background:rgba(5,15,20,.45);z-index:40;opacity:0;pointer-events:none;transition:opacity .2s}
+.scrim.on{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(520px,100%);background:var(--bg);z-index:41;transform:translateX(100%);transition:transform .25s;display:flex;flex-direction:column;box-shadow:-10px 0 40px rgba(0,0,0,.2);padding-bottom:env(safe-area-inset-bottom)}
+.drawer.on{transform:none}
+.drawer header{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid var(--line);gap:10px}
+.drawer header h2{font-size:20px}
+.drawer .body{overflow:auto;padding:16px 18px;flex:1}
+.drawer footer{padding:12px 18px;border-top:1px solid var(--line);display:flex;gap:8px;flex-wrap:wrap}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:13px;font-weight:600;margin-bottom:4px}
+.field textarea{min-height:76px;resize:vertical}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.view dl{margin:0;display:grid;grid-template-columns:140px 1fr;gap:8px 12px;font-size:14px}
+.view dt{color:var(--muted)}
+.view dd{margin:0;white-space:pre-wrap;word-break:break-word}
+.suggest{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+
+/* deadlines / meetings */
+.group{margin:22px 0}
+.group h2{font-size:19px;display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.group h2 .n{font-family:var(--font);font-size:13px;color:var(--muted);font-weight:500}
+
+/* project page */
+.goal-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.goal{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px}
+.goal b{font-family:var(--serif);font-size:22px;color:var(--accent)}
+.goal p{margin:6px 0 4px;font-weight:500}
+.goal small{color:var(--muted)}
+.status-list{display:flex;flex-direction:column;gap:8px}
+.status-row{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:10px 14px;background:var(--surface);border:1px solid var(--line);border-radius:10px}
+.road{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;position:relative}
+.stage{background:var(--surface);border:1px solid var(--line);border-top:4px solid var(--c);border-radius:12px;padding:14px}
+.stage h3{font-size:16px;margin-bottom:6px}
+.stage ul{margin:0;padding-left:18px;font-size:14px}
+.stage li{margin:3px 0}
+.arch{width:100%;height:auto;display:block}
+.tbl{width:100%;border-collapse:collapse;font-size:14px;background:var(--surface);border-radius:12px;overflow:hidden}
+.tbl th,.tbl td{padding:9px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.tbl th{background:var(--surface-2);font-weight:600}
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px}
+
+/* drop */
+.dropzone{position:fixed;inset:0;z-index:60;background:color-mix(in srgb,var(--navy) 85%,transparent);display:none;place-items:center;color:#fff;font-size:22px;font-family:var(--serif)}
+.dropzone.on{display:grid}
+.dropzone div{border:3px dashed var(--amber);border-radius:20px;padding:50px 60px;text-align:center}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--navy);color:#fff;padding:10px 18px;border-radius:10px;z-index:70;box-shadow:var(--shadow);opacity:0;transition:opacity .2s;pointer-events:none;max-width:calc(100% - 32px)}
+.toast.on{opacity:1}
+.progress{height:4px;background:var(--surface-2);border-radius:4px;overflow:hidden;margin-top:8px}
+.progress div{height:100%;background:var(--accent);width:0;transition:width .2s}
+
+footer.site{border-top:1px solid var(--line);padding:22px 0 calc(22px + env(safe-area-inset-bottom));color:var(--muted);font-size:13px}
+footer.site .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+@media (max-width:860px){
+  .layout{grid-template-columns:1fr}
+  .side{position:static;display:none}
+  .side.open{display:flex}
+  .filters-toggle{display:inline-flex}
+  .top .btn.amber span{display:none}
+  .brand .name{display:none}
+  .row2{grid-template-columns:1fr}
+  .view dl{grid-template-columns:1fr;gap:2px}
+  .view dt{margin-top:8px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#home" aria-label="Эко-справочник, главная">
+      <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="13" fill="none" stroke="#f2a93b" stroke-width="2"/><path d="M5 17c4-5 7-5 9-2s5 3 9-2" fill="none" stroke="#e8f1f5" stroke-width="2" stroke-linecap="round"/><path d="M6 12c3-3 6-3 8-1" fill="none" stroke="#e8f1f5" stroke-width="1.6" stroke-linecap="round" opacity=".6"/></svg>
+      <span class="name">Эко-справочник</span>
+    </a>
+    <nav class="main" aria-label="Разделы">
+      <a href="#home" data-r="home">Главная</a>
+      <a href="#catalog" data-r="catalog">Каталог</a>
+      <a href="#meetings" data-r="meetings">Встречи</a>
+      <a href="#deadlines" data-r="deadlines">Сроки</a>
+      <a href="#settings" data-r="settings">Настройка</a>
+      <a href="#project" data-r="project">О проекте</a>
+    </nav>
+    <button class="btn amber sm" id="addBtn" title="Добавить запись">＋ <span>Добавить</span></button>
+  </div>
+</header>
+
+<main id="app"></main>
+
+<footer class="site"><div class="wrap">
+  <span>Эко-справочник · прототип по PRD v1.0 · данные хранятся в этом браузере</span>
+  <span id="storage"></span>
+</div></footer>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle">
+  <header><h2 id="drawerTitle"></h2><button class="btn ghost sm" id="drawerClose" aria-label="Закрыть">✕</button></header>
+  <div class="body" id="drawerBody"></div>
+  <footer id="drawerFoot"></footer>
+</aside>
+<div class="dropzone" id="dropzone"><div>Отпустите файлы,<br>чтобы добавить их в справочник</div></div>
+<input type="file" id="fileInput" multiple hidden>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+"use strict";
+/* ============ Константы ============ */
+const ICONS = {
+  climate:'<path d="M12 3v10.5a3.5 3.5 0 1 1-3 0V5a1.5 1.5 0 0 1 3 0" /><path d="M15 6h4M15 10h3"/>',
+  air:'<path d="M3 9h11a3 3 0 1 0-3-3M3 15h15a3 3 0 1 1-3 3M3 12h7"/>',
+  water:'<path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/>',
+  waste:'<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/>',
+  land:'<path d="M3 20l6-9 4 5 3-4 5 8z"/><circle cx="17" cy="6" r="2"/>',
+  bio:'<path d="M5 19c0-8 6-14 14-14 0 8-6 14-14 14zM5 19l7-7"/>',
+  policy:'<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/>',
+  esg:'<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
+  project:'<path d="M3 7h18v12H3zM8 7V4h8v3"/><path d="M3 12h18"/>',
+  permit:'<path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13h7M9 17h5"/>',
+  contract:'<path d="M4 15l4 4 12-12-4-4z"/><path d="M14 5l4 4"/>',
+  meet:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>'
+};
+const DEFAULT_THEMES = [
+  {id:'climate',name:'Климат и декарбонизация',desc:'Выбросы ПГ, энергоэффективность, низкоуглеродные проекты',color:'#d96b2b',icon:'climate',folders:['Водород','Метан','CCUS'],kw:['климат','декарбон','парников','пг','co2','углерод','водород','метан','ccus','улавлив']},
+  {id:'air',name:'Атмосферный воздух',desc:'Выбросы, ПДВ, мониторинг, факелы',color:'#4b8fd1',icon:'air',folders:[],kw:['атмосфер','воздух','выброс','пдв','факел','пнг']},
+  {id:'water',name:'Водные ресурсы',desc:'Водопользование, сбросы, качество воды',color:'#1f9bb5',icon:'water',folders:[],kw:['вод','сброс','скважин','каспий']},
+  {id:'waste',name:'Отходы и нефтешламы',desc:'Паспорта отходов, обращение, утилизация',color:'#8a6d3b',icon:'waste',folders:[],kw:['отход','шлам','нефтешлам','паспорт отход','утилиз','полигон']},
+  {id:'land',name:'Земли и рекультивация',desc:'Загрязнение почв, рекультивация, исторические загрязнения',color:'#6d8f2f',icon:'land',folders:[],kw:['земл','почв','рекультив','загрязнен']},
+  {id:'bio',name:'Биоразнообразие',desc:'Особо охраняемые территории, флора и фауна',color:'#2e9d5b',icon:'bio',folders:[],kw:['биоразнообраз','флор','фаун','тюлен','охраня']},
+  {id:'policy',name:'Политики и стандарты',desc:'Экологическая политика, ISO 14001, внутренние стандарты',color:'#7058c4',icon:'policy',folders:[],kw:['политик','стандарт','iso','14001','регламент']},
+  {id:'esg',name:'Отчётность и ESG',desc:'Отчёты об устойчивом развитии, показатели, раскрытие',color:'#c4477a',icon:'esg',folders:[],kw:['отчет','отчёт','esg','устойчив','показател','раскрыт']},
+  {id:'project',name:'Проекты и ОВОС',desc:'Оценка воздействия, экспертизы, проектная документация',color:'#d1a12b',icon:'project',folders:[],kw:['овос','оценка воздейств','экспертиз','проект']},
+  {id:'permit',name:'Разрешения и проверки',desc:'Разрешения, ПЭК, протоколы, предписания',color:'#3b6f8f',icon:'permit',folders:[],kw:['разрешен','лиценз','проверк','пэк','протокол','предписан','замер']},
+  {id:'contract',name:'Договоры и подрядчики',desc:'Договоры на услуги, акты, подрядные организации',color:'#8d5a97',icon:'contract',folders:[],kw:['договор','подряд','акт ','контракт']}
+];
+const DEFAULT_TYPES = ['Отчёт','Политика или стандарт','Нормативный акт','Новость','Проект','Показатели и данные','Разрешение','Протокол замеров','Паспорт отходов','Договор','Предписание','Другое'];
+const PRESET_TAGS = ['метан','водород','CCUS','ПНГ','ПЭК','Каспий','ОВОС','ISO 14001','ESG','выбросы','отходы','рекультивация','мониторинг'];
+const KINDS = {external:{name:'Внешний материал',c:'#4b8fd1'},doc:{name:'Документ',c:'#0f7a6c'},note:{name:'Заметка',c:'#8a6d3b'},meeting:{name:'Встреча',c:'#d96b2b'}};
+const TEXT_EXT = ['txt','md','csv','json','tsv','xml','html','htm'];
+const MAX_FILE = 20*1024*1024, MAX_TEXT = 30000;
+const LS_KEY = 'eco-ref-v1';
+
+/* ============ Утилиты ============ */
+const $ = (s,el=document)=>el.querySelector(s);
+const esc = s => String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const norm = s => String(s??'').toLowerCase().replace(/ё/g,'е');
+const uid = ()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const today = ()=>{const d=new Date();d.setHours(0,0,0,0);return d};
+const iso = d => { const z=new Date(d); return `${z.getFullYear()}-${String(z.getMonth()+1).padStart(2,'0')}-${String(z.getDate()).padStart(2,'0')}`; };
+const addDays = n => { const d=today(); d.setDate(d.getDate()+n); return iso(d); };
+const daysTo = s => s ? Math.round((new Date(s+'T00:00:00')-today())/864e5) : null;
+const fmtDate = s => s ? new Date(s+'T00:00:00').toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'}) : '';
+function plural(n,a,b,c){n=Math.abs(n)%100;const m=n%10;if(n>10&&n<20)return c;if(m>1&&m<5)return b;if(m===1)return a;return c}
+const safeUrl = u => /^https?:\/\//i.test(String(u||'').trim()) ? String(u).trim() : '';
+function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('on'),2600)}
+const icon = (name,size=22)=>`<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[name]||ICONS.permit}</svg>`;
+
+/* ============ Хранилище ============ */
+let DB;
+function demoData(){
+  const r = (o)=>Object.assign({id:uid(),created:Date.now()-Math.floor(Math.random()*20)*864e5,tags:[],status:'review'},o);
+  return [
+    r({kind:'external',title:'Пример: отчёт об устойчивом развитии за 2025 год',desc:'Демонстрационная карточка внешнего материала. Здесь пишется краткое описание своими словами и ставится ссылка на источник.',url:'https://example.com/',source:'Сайт компании',theme:'esg',type:'Отчёт',year:2025,org:'Головная компания',tags:['ESG','выбросы','демо']}),
+    r({kind:'external',title:'Пример: программа сокращения выбросов метана',desc:'Демонстрационная карточка: цели по снижению выбросов метана, программа обнаружения и устранения утечек (LDAR).',url:'https://example.com/',source:'Сайт компании',theme:'climate',folder:'Метан',type:'Проект',year:2024,org:'Головная компания',tags:['метан','LDAR','демо'],status:'verified'}),
+    r({kind:'external',title:'Пример: пилотный проект по низкоуглеродному водороду',desc:'Демонстрационная карточка папки «Водород».',url:'https://example.com/',source:'Сайт компании',theme:'climate',folder:'Водород',type:'Новость',year:2025,org:'Головная компания',tags:['водород','демо']}),
+    r({kind:'external',title:'Пример: оценка потенциала улавливания и хранения CO₂',desc:'Демонстрационная карточка папки «CCUS».',url:'https://example.com/',source:'Сайт компании',theme:'climate',folder:'CCUS',type:'Отчёт',year:2023,org:'Головная компания',tags:['CCUS','демо']}),
+    r({kind:'doc',title:'Пример: разрешение на эмиссии в окружающую среду',desc:'Демонстрационный документ со сроком действия.',theme:'permit',type:'Разрешение',year:2024,org:'Дочернее предприятие А',tags:['выбросы','демо'],expires:addDays(24),original:'Шкаф 3, папка «Разрешения», дело 12',text:'Разрешение на эмиссии в окружающую среду. Нормативы допустимых выбросов загрязняющих веществ в атмосферный воздух от стационарных источников, включая факельные установки сжигания ПНГ.'}),
+    r({kind:'doc',title:'Пример: протокол замеров выбросов, 3 квартал',desc:'Протокол инструментальных замеров на источниках выбросов.',theme:'air',type:'Протокол замеров',year:2026,org:'Дочернее предприятие А',tags:['ПЭК','мониторинг','демо'],original:'\\\\server\\eco\\ПЭК\\2026',text:'Протокол производственного экологического контроля. Замеры диоксида азота, оксида углерода, сероводорода на границе санитарно-защитной зоны. Превышений не выявлено.'}),
+    r({kind:'doc',title:'Пример: паспорт отходов — нефтешлам',desc:'Паспорт опасного отхода.',theme:'waste',type:'Паспорт отходов',year:2025,org:'Дочернее предприятие Б',tags:['отходы','демо'],expires:addDays(-6),original:'Шкаф 1, дело 4',text:'Паспорт опасных отходов. Нефтешлам, образующийся при зачистке резервуаров. Код отхода, состав, класс опасности, способ утилизации.'}),
+    r({kind:'doc',title:'Пример: договор на вывоз и утилизацию отходов',desc:'Договор с подрядчиком.',theme:'contract',type:'Договор',year:2026,org:'Подрядчик В',tags:['отходы','демо'],expires:addDays(71),original:'Договорной отдел, №145'}),
+    r({kind:'note',title:'Пример: что проверить перед инспекцией',desc:'Наличие журналов ПЭК, актуальность разрешений, паспортов отходов, договоров с подрядчиками.',theme:'permit',tags:['ПЭК','демо']}),
+    r({kind:'meeting',title:'Пример: совещание по программе LDAR',date:addDays(3),time:'10:00',place:'Переговорная 4 / онлайн',participants:'Экологи, служба эксплуатации, подрядчик',agenda:'1. Итоги обследования\n2. График ремонта утечек',decisions:'',tasks:'',theme:'climate',folder:'Метан',tags:['метан','демо']}),
+    r({kind:'meeting',title:'Пример: разбор предписания инспекции',date:addDays(-9),time:'15:00',place:'Онлайн',participants:'Эколог, юрист, начальник участка',agenda:'Пункты предписания и сроки исполнения',decisions:'Подготовить план мероприятий',tasks:'План мероприятий — эколог, до '+fmtDate(addDays(12)),theme:'permit',tags:['демо']})
+  ];
+}
+function load(){
+  try{ const raw=localStorage.getItem(LS_KEY); if(raw){ DB=JSON.parse(raw); } }catch(e){}
+  if(!DB||!Array.isArray(DB.items)) DB={items:demoData(),themes:DEFAULT_THEMES,types:DEFAULT_TYPES};
+  DB.themes ||= DEFAULT_THEMES; DB.types ||= DEFAULT_TYPES;
+}
+function save(){
+  try{ localStorage.setItem(LS_KEY,JSON.stringify(DB)); }catch(e){ toast('Не удалось сохранить: переполнено хранилище браузера'); }
+  updateStorage();
+}
+function updateStorage(){
+  let n=0; try{ n=(localStorage.getItem(LS_KEY)||'').length*2; }catch(e){}
+  $('#storage').textContent = `Записей: ${DB.items.length} · занято ≈ ${(n/1024).toFixed(0)} КБ из ~5 МБ`;
+}
+const themeById = id => DB.themes.find(t=>t.id===id);
+const themeColor = it => (themeById(it.theme)||{}).color || KINDS[it.kind].c;
+
+/* ============ Поиск ============ */
+function hayOf(it){
+  return norm([it.title,it.desc,it.notes,it.org,(it.tags||[]).join(' '),it.text,it.participants,it.agenda,it.decisions,it.tasks,it.source,it.type,it.place,it.original].join(' \n '));
+}
+function terms(q){ return norm(q).split(/\s+/).filter(Boolean); }
+function matches(it,ts){ if(!ts.length) return true; const h=hayOf(it); return ts.every(t=>h.includes(t)); }
+function hl(text,ts){
+  text=String(text??''); if(!ts.length||!text) return esc(text);
+  const n=norm(text); const marks=new Array(text.length).fill(false);
+  ts.forEach(t=>{let i=n.indexOf(t);while(i>-1){for(let k=i;k<i+t.length;k++)marks[k]=true;i=n.indexOf(t,i+t.length)}});
+  let out='',open=false;
+  for(let i=0;i<text.length;i++){ if(marks[i]&&!open){out+='<mark>';open=true} if(!marks[i]&&open){out+='</mark>';open=false} out+=esc(text[i]); }
+  return out+(open?'</mark>':'');
+}
+function snippet(it,ts){
+  if(!ts.length) return '';
+  for(const f of ['text','decisions','tasks','agenda','participants','notes']){
+    const v=it[f]; if(!v) continue; const n=norm(v); const t=ts.find(t=>n.includes(t)); if(!t) continue;
+    const i=n.indexOf(t), a=Math.max(0,i-70), b=Math.min(v.length,i+t.length+90);
+    return (a>0?'…':'')+hl(v.slice(a,b).replace(/\s+/g,' '),ts)+(b<v.length?'…':'');
+  }
+  return '';
+}
+
+/* ============ Состояние каталога ============ */
+const S = {kind:'all',theme:'',folder:'',q:'',type:'',year:'',org:'',status:'',soon:false,tags:[],sort:'new'};
+function resetFilters(){ Object.assign(S,{kind:'all',theme:'',folder:'',q:'',type:'',year:'',org:'',status:'',soon:false,tags:[],sort:'new'}); }
+function filtered(){
+  const ts=terms(S.q);
+  let list=DB.items.filter(it=>
+    (S.kind==='all'||(S.kind==='docs'?(it.kind==='doc'||it.kind==='note'):it.kind===S.kind)) &&
+    (!S.theme||it.theme===S.theme) && (!S.folder||it.folder===S.folder) &&
+    (!S.type||it.type===S.type) && (!S.year||String(it.year)===S.year) && (!S.org||it.org===S.org) &&
+    (!S.status||(it.kind==='external'&&it.status===S.status)) &&
+    (!S.soon||(it.expires&&daysTo(it.expires)<=90)) &&
+    S.tags.every(t=>(it.tags||[]).includes(t)) && matches(it,ts));
+  const by={new:(a,b)=>b.created-a.created,year:(a,b)=>(b.year||0)-(a.year||0),deadline:(a,b)=>(a.expires||a.date||'9999').localeCompare(b.expires||b.date||'9999'),title:(a,b)=>a.title.localeCompare(b.title,'ru')};
+  return list.sort(by[S.sort]);
+}
+function tagCounts(items){ const m=new Map(); items.forEach(it=>(it.tags||[]).forEach(t=>m.set(t,(m.get(t)||0)+1))); return [...m].sort((a,b)=>b[1]-a[1]); }
+
+/* ============ Карточка ============ */
+function deadlineBadge(it){
+  const d=daysTo(it.expires); if(d===null) return '';
+  if(d<0) return `<span class="badge late">Просрочено ${-d} ${plural(-d,'день','дня','дней')}</span>`;
+  if(d<=90) return `<span class="badge soon">Осталось ${d} ${plural(d,'день','дня','дней')}</span>`;
+  return `<span class="badge">до ${fmtDate(it.expires)}</span>`;
+}
+function meetingBadge(it){
+  const d=daysTo(it.date); if(d===null) return '';
+  if(d===0) return '<span class="badge soon">Сегодня</span>';
+  if(d>0) return `<span class="badge soon">Через ${d} ${plural(d,'день','дня','дней')}</span>`;
+  return '<span class="badge ok">Состоялась</span>';
+}
+function cardHTML(it,ts=[]){
+  const th=themeById(it.theme), k=KINDS[it.kind];
+  const meta=[`<span class="badge kind" style="--c:${k.c}">${k.name}</span>`];
+  if(th) meta.push(`<span>${esc(th.name)}${it.folder?' / '+esc(it.folder):''}</span>`);
+  if(it.type) meta.push(`<span>${esc(it.type)}</span>`);
+  if(it.year) meta.push(`<span>${esc(it.year)}</span>`);
+  if(it.org) meta.push(`<span>${hl(it.org,ts)}</span>`);
+  if(it.kind==='meeting') meta.push(`<span>${fmtDate(it.date)}${it.time?', '+esc(it.time):''}</span>`);
+  const foot=[];
+  if(it.kind==='external') foot.push(it.status==='verified'?'<span class="badge ok">Проверено по источнику</span>':'<span class="badge review">Требует проверки</span>');
+  if(it.kind==='meeting'){ foot.push(meetingBadge(it)); if(it.tasks) foot.push('<span class="badge task">Есть поручения</span>'); }
+  foot.push(deadlineBadge(it));
+  (it.tags||[]).forEach(t=>foot.push(`<button class="tag${S.tags.includes(t)?' on':''}" data-tag="${esc(t)}">#${hl(t,ts)}</button>`));
+  const url=safeUrl(it.url);
+  if(url) foot.push(`<a href="${esc(url)}" target="_blank" rel="noopener noreferrer" class="btn sm ghost" style="margin-left:auto">Источник ↗</a>`);
+  const sn=snippet(it,ts);
+  const desc=it.kind==='meeting'?(it.agenda||''):(it.desc||'');
+  return `<article class="card" style="--c:${themeColor(it)}">
+    <div class="meta">${meta.join('')}</div>
+    <h3 data-open="${it.id}" tabindex="0" role="button">${hl(it.title,ts)}</h3>
+    ${desc?`<p>${hl(desc.length>260?desc.slice(0,260)+'…':desc,ts)}</p>`:''}
+    ${sn?`<div class="snip">${sn}</div>`:''}
+    <div class="foot">${foot.join('')}</div>
+  </article>`;
+}
+function miniHTML(it,sub){
+  return `<div class="mini" data-open="${it.id}" tabindex="0" role="button" style="--c:${themeColor(it)}"><span class="dot"></span><div><div class="t">${esc(it.title)}</div><div class="s">${sub}</div></div></div>`;
+}
+
+/* ============ Страницы ============ */
+const app=$('#app');
+function reliefSVG(){
+  let paths='';
+  for(let i=0;i<9;i++){
+    const y=60+i*42, a=18+i*3;
+    const d=`M-20 ${y} C 200 ${y-a}, 360 ${y+a*1.6}, 600 ${y-a*.4} S 1000 ${y+a}, 1240 ${y-a*.8} S 1500 ${y+a*.6}, 1700 ${y}`;
+    paths+=`<path d="${d}" fill="none" stroke="${i===5?'#f2a93b':'#5f8aa0'}" stroke-width="${i===5?2:1.1}" opacity="${i===5?.95:.28+i*.03}"/>`;
+  }
+  return `<svg class="relief" viewBox="0 0 1600 440" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${paths}</svg>`;
+}
+function stats(){
+  const it=DB.items;
+  return {ext:it.filter(x=>x.kind==='external').length,docs:it.filter(x=>x.kind==='doc'||x.kind==='note').length,
+    meet:it.filter(x=>x.kind==='meeting').length,soon:it.filter(x=>x.expires&&daysTo(x.expires)<=90).length};
+}
+function renderHome(){
+  const st=stats();
+  const upcoming=DB.items.filter(x=>x.kind==='meeting'&&daysTo(x.date)>=0).sort((a,b)=>a.date.localeCompare(b.date)).slice(0,3);
+  const expiring=DB.items.filter(x=>x.expires&&daysTo(x.expires)<=90).sort((a,b)=>a.expires.localeCompare(b.expires)).slice(0,5);
+  const recent=[...DB.items].sort((a,b)=>b.created-a.created).slice(0,5);
+  app.innerHTML=`
+  <section class="hero">${reliefSVG()}<div class="wrap">
+    <h1>Цифровой справочник эколога</h1>
+    <p class="lead">Документы, внешние материалы и встречи — в одном каталоге по темам. Поиск по тексту без открытия папок на рабочем столе.</p>
+    <form class="bigsearch" id="heroSearch" role="search">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#567" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+      <input id="heroQ" placeholder="Например: метан разрешение 2025" aria-label="Поиск по справочнику">
+      <kbd>/</kbd><button class="btn primary">Найти</button>
+    </form>
+    <div class="stats">
+      <div class="stat"><b>${st.ext}</b><span>внешних материалов</span></div>
+      <div class="stat"><b>${st.docs}</b><span>документов и заметок</span></div>
+      <div class="stat"><b>${st.meet}</b><span>встреч</span></div>
+      <div class="stat warn"><b>${st.soon}</b><span>сроков в ближайшие 90 дней</span></div>
+    </div>
+  </div></section>
+  <div class="wrap">
+    ${DB.items.length?'':`<section class="block"><div class="block-head"><h2>С чего начать</h2></div><div class="start">
+      <button data-act="upload"><b>Загрузить файлы</b><span class="muted">Перетащите PDF, Word, Excel, TXT в окно</span></button>
+      <button data-act="new-external"><b>Добавить материал по ссылке</b><span class="muted">Карточка с описанием и источником</span></button>
+      <button data-act="import"><b>Импортировать список</b><span class="muted">Строки «Название | Ссылка | Тема …» или JSON</span></button>
+    </div></section>`}
+    <section class="block"><div class="block-head"><h2>Темы</h2><a href="#catalog">Весь каталог →</a></div>
+      <div class="tiles">${DB.themes.map(t=>{const n=DB.items.filter(x=>x.theme===t.id).length;return `
+        <div class="tile" style="--c:${t.color}" data-theme="${t.id}" tabindex="0" role="button" aria-label="${esc(t.name)}, записей: ${n}">
+          <span class="count">${n}</span><span class="ic">${icon(t.icon)}</span>
+          <h3>${esc(t.name)}</h3><p>${esc(t.desc)}</p>
+          ${t.folders.length?`<div class="folders">${t.folders.map(f=>`<button data-theme="${t.id}" data-folder="${esc(f)}">${esc(f)} · ${DB.items.filter(x=>x.theme===t.id&&x.folder===f).length}</button>`).join('')}</div>`:''}
+        </div>`}).join('')}</div>
+    </section>
+    <section class="block cols">
+      <div class="panel"><h3>Встречи и собрания</h3>
+        ${upcoming.length?upcoming.map(m=>miniHTML(m,`${fmtDate(m.date)}${m.time?', '+esc(m.time):''} · ${esc(m.place||'')}`)).join(''):
+        `<div class="empty">Предстоящих встреч нет.<br><button class="btn sm" data-act="new-meeting" style="margin-top:8px">Записать встречу</button></div>`}
+      </div>
+      ${expiring.length?`<div class="panel"><h3>Скоро истекают</h3>${expiring.map(x=>{const d=daysTo(x.expires);return miniHTML(x,d<0?`<span style="color:var(--danger)">просрочено ${-d} ${plural(-d,'день','дня','дней')}</span>`:`осталось ${d} ${plural(d,'день','дня','дней')} · ${fmtDate(x.expires)}`)}).join('')}</div>`:''}
+      ${recent.length?`<div class="panel"><h3>Недавно добавлено</h3>${recent.map(x=>miniHTML(x,`${KINDS[x.kind].name} · ${esc((themeById(x.theme)||{}).name||'')}`)).join('')}</div>`:''}
+    </section>
+  </div>`;
+  $('#heroSearch').onsubmit=e=>{e.preventDefault();resetFilters();S.q=$('#heroQ').value;go('catalog')};
+}
+
+function renderCatalog(){
+  const list=filtered(), ts=terms(S.q);
+  const scope=DB.items.filter(it=>S.kind==='all'||(S.kind==='docs'?(it.kind==='doc'||it.kind==='note'):it.kind===S.kind));
+  const th=themeById(S.theme);
+  const years=[...new Set(DB.items.map(x=>x.year).filter(Boolean))].sort((a,b)=>b-a);
+  const orgs=[...new Set(DB.items.map(x=>x.org).filter(Boolean))].sort();
+  const tags=tagCounts(DB.items).slice(0,30);
+  const opt=(arr,v)=>arr.map(x=>`<option${String(x)===v?' selected':''}>${esc(x)}</option>`).join('');
+  app.innerHTML=`<div class="wrap">
+    <div class="page-head"><h1>Каталог</h1></div>
+    <div class="toolbar">
+      <div class="seg" role="tablist">${[['all','Всё'],['external','Внешние материалы'],['docs','Мои документы'],['meeting','Встречи']].map(([k,n])=>`<button data-kind="${k}" class="${S.kind===k?'on':''}">${n}</button>`).join('')}</div>
+      <label class="search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+        <input id="q" value="${esc(S.q)}" placeholder="Поиск по названию, тексту, тегам, участникам…  ( / )" aria-label="Поиск"></label>
+      <button class="btn filters-toggle" id="ftog">Фильтры</button>
+    </div>
+    <div class="chips"><button class="chip${!S.theme?' on':''}" data-th="">Все темы <i>${scope.length}</i></button>
+      ${DB.themes.map(t=>`<button class="chip${S.theme===t.id?' on':''}" style="--c:${t.color}" data-th="${t.id}">${esc(t.name)} <i>${scope.filter(x=>x.theme===t.id).length}</i></button>`).join('')}</div>
+    ${th&&th.folders.length?`<div class="chips sub"><button class="chip${!S.folder?' on':''}" style="--c:${th.color}" data-fo="">Все папки</button>
+      ${th.folders.map(f=>`<button class="chip${S.folder===f?' on':''}" style="--c:${th.color}" data-fo="${esc(f)}">📁 ${esc(f)} <i>${scope.filter(x=>x.theme===th.id&&x.folder===f).length}</i></button>`).join('')}</div>`:''}
+    <div class="layout">
+      <aside class="side" id="side">
+        <div><label for="fType">Тип</label><select id="fType"><option value="">Все типы</option>${opt(DB.types,S.type)}</select></div>
+        <div><label for="fYear">Год</label><select id="fYear"><option value="">Все годы</option>${opt(years,S.year)}</select></div>
+        <div><label for="fOrg">Организация</label><select id="fOrg"><option value="">Все</option>${opt(orgs,S.org)}</select></div>
+        <div><label for="fStatus">Статус проверки</label><select id="fStatus"><option value="">Любой</option>
+          <option value="review"${S.status==='review'?' selected':''}>Требует проверки</option><option value="verified"${S.status==='verified'?' selected':''}>Проверено</option></select></div>
+        <label class="check"><input type="checkbox" id="fSoon"${S.soon?' checked':''}> Срок действия до 90 дней</label>
+        <div><label for="fSort">Сортировка</label><select id="fSort">${[['new','Новые'],['year','По году'],['deadline','По сроку'],['title','По названию']].map(([k,n])=>`<option value="${k}"${S.sort===k?' selected':''}>${n}</option>`).join('')}</select></div>
+        <div><label>Теги</label><div class="tagcloud">${tags.length?tags.map(([t,n])=>`<button class="tag${S.tags.includes(t)?' on':''}" data-tag="${esc(t)}">#${esc(t)}<i>${n}</i></button>`).join(''):'<span class="muted">Тегов пока нет</span>'}</div></div>
+        <button class="btn" id="reset">Сбросить</button>
+      </aside>
+      <div>
+        <div class="results-head"><span class="muted">Найдено: <b style="color:var(--ink)">${list.length}</b> ${plural(list.length,'запись','записи','записей')}${S.tags.length?' · теги: '+S.tags.map(t=>'#'+esc(t)).join(', '):''}</span>
+          <span style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn sm" data-act="upload">Загрузить файлы</button><button class="btn sm" data-act="import">Импорт</button><button class="btn sm" data-act="export">CSV</button></span></div>
+        <div class="cards">${list.length?list.map(it=>cardHTML(it,ts)).join(''):'<div class="empty panel">Ничего не найдено. Попробуйте изменить запрос или <button class="btn sm" id="reset2">сбросить фильтры</button></div>'}</div>
+      </div>
+    </div></div>`;
+  const q=$('#q'); q.oninput=()=>{S.q=q.value;clearTimeout(q.t);q.t=setTimeout(()=>{const p=q.selectionStart;renderCatalog();const n=$('#q');n.focus();n.setSelectionRange(p,p)},180)};
+  [['fType','type'],['fYear','year'],['fOrg','org'],['fStatus','status'],['fSort','sort']].forEach(([id,k])=>$('#'+id).onchange=e=>{S[k]=e.target.value;renderCatalog()});
+  $('#fSoon').onchange=e=>{S.soon=e.target.checked;renderCatalog()};
+  $('#reset').onclick=()=>{resetFilters();renderCatalog()};
+  const r2=$('#reset2'); if(r2) r2.onclick=()=>{resetFilters();renderCatalog()};
+  $('#ftog').onclick=()=>$('#side').classList.toggle('open');
+}
+
+function renderDeadlines(){
+  const all=DB.items.filter(x=>x.expires).sort((a,b)=>a.expires.localeCompare(b.expires));
+  const g=[['Просрочено',x=>daysTo(x.expires)<0,'var(--danger)'],['Ближайшие 30 дней',x=>{const d=daysTo(x.expires);return d>=0&&d<=30},'var(--warn)'],['От 31 до 90 дней',x=>{const d=daysTo(x.expires);return d>30&&d<=90},'var(--amber)'],['Позже',x=>daysTo(x.expires)>90,'var(--ok)']];
+  app.innerHTML=`<div class="wrap"><div class="page-head"><h1>Сроки действия</h1><p class="muted">Разрешения, лицензии, договоры и другие документы с полем «Срок действия до».</p></div>
+  ${all.length?g.map(([n,f,c])=>{const l=all.filter(f);return l.length?`<div class="group"><h2><span class="dot" style="--c:${c};margin:0"></span>${n} <span class="n">${l.length}</span></h2><div class="cards">${l.map(x=>cardHTML(x)).join('')}</div></div>`:''}).join(''):
+  '<div class="empty panel" style="margin:20px 0">Нет документов со сроком действия. Укажите срок в карточке документа.</div>'}
+  <div style="height:30px"></div></div>`;
+}
+
+function renderMeetings(){
+  const m=DB.items.filter(x=>x.kind==='meeting');
+  const up=m.filter(x=>daysTo(x.date)>=0).sort((a,b)=>a.date.localeCompare(b.date));
+  const past=m.filter(x=>daysTo(x.date)<0).sort((a,b)=>b.date.localeCompare(a.date));
+  app.innerHTML=`<div class="wrap"><div class="page-head" style="display:flex;justify-content:space-between;align-items:end;gap:10px;flex-wrap:wrap"><div><h1>Встречи и собрания</h1><p class="muted">Повестка, решения и поручения — с поиском по всему справочнику.</p></div><button class="btn primary" data-act="new-meeting">＋ Записать встречу</button></div>
+  <div class="group"><h2>Предстоящие <span class="n">${up.length}</span></h2>${up.length?`<div class="cards">${up.map(x=>cardHTML(x)).join('')}</div>`:'<div class="empty panel">Нет предстоящих встреч</div>'}</div>
+  <div class="group"><h2>Прошедшие <span class="n">${past.length}</span></h2>${past.length?`<div class="cards">${past.map(x=>cardHTML(x)).join('')}</div>`:'<div class="empty panel">Пока пусто</div>'}</div>
+  <div style="height:30px"></div></div>`;
+}
+
+function renderSettings(){
+  const tags=tagCounts(DB.items);
+  app.innerHTML=`<div class="wrap"><div class="page-head"><h1>Настройка справочника</h1><p class="muted">Темы и папки, типы материалов, теги, импорт и выгрузка.</p></div>
+  <section class="block"><div class="block-head"><h2>Темы и папки</h2><button class="btn sm" id="addTheme">＋ Тема</button></div>
+    <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Тема</th><th>Описание</th><th>Папки (через запятую)</th><th></th></tr></thead><tbody>
+    ${DB.themes.map((t,i)=>`<tr><td><input data-ti="${i}" data-f="name" value="${esc(t.name)}" style="width:100%;border:1px solid var(--line);border-radius:7px;padding:5px 8px;background:var(--surface)"></td>
+      <td><input data-ti="${i}" data-f="desc" value="${esc(t.desc)}" style="width:100%;border:1px solid var(--line);border-radius:7px;padding:5px 8px;background:var(--surface)"></td>
+      <td><input data-ti="${i}" data-f="folders" value="${esc(t.folders.join(', '))}" style="width:100%;border:1px solid var(--line);border-radius:7px;padding:5px 8px;background:var(--surface)"></td>
+      <td><button class="btn sm danger" data-deltheme="${i}">Удалить</button></td></tr>`).join('')}
+    </tbody></table></div></section>
+  <section class="block"><div class="block-head"><h2>Типы материалов</h2></div>
+    <div class="field"><textarea id="typesTa" rows="4">${esc(DB.types.join('\n'))}</textarea><small class="muted">По одному типу в строке. Изменения сохраняются при выходе из поля.</small></div></section>
+  <section class="block"><div class="block-head"><h2>Теги</h2></div>
+    ${tags.length?`<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Тег</th><th>Записей</th><th></th></tr></thead><tbody>
+    ${tags.map(([t,n])=>`<tr><td>#${esc(t)}</td><td>${n}</td><td style="white-space:nowrap"><button class="btn sm" data-rentag="${esc(t)}">Переименовать / объединить</button> <button class="btn sm danger" data-deltag="${esc(t)}">Удалить</button></td></tr>`).join('')}
+    </tbody></table></div>`:'<div class="empty panel">Тегов пока нет</div>'}</section>
+  <section class="block"><div class="block-head"><h2>Данные</h2></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" data-act="import">Импорт списка</button><button class="btn" data-act="export">Выгрузить CSV</button>
+    <button class="btn" id="clearDemo">Удалить демо-записи</button><button class="btn danger" id="resetAll">Сбросить справочник</button></div></section>
+  </div>`;
+  app.querySelectorAll('[data-ti]').forEach(inp=>inp.onchange=()=>{const t=DB.themes[inp.dataset.ti];const f=inp.dataset.f;
+    if(f==='folders'){const nf=inp.value.split(',').map(s=>s.trim()).filter(Boolean);DB.items.forEach(x=>{if(x.theme===t.id&&x.folder&&!nf.includes(x.folder))x.folder=''});t.folders=nf}else t[f]=inp.value.trim()||t[f];save();toast('Сохранено')});
+  $('#typesTa').onchange=e=>{DB.types=e.target.value.split('\n').map(s=>s.trim()).filter(Boolean);save();toast('Типы сохранены')};
+  $('#addTheme').onclick=()=>{const name=prompt('Название новой темы');if(!name)return;DB.themes.push({id:'t'+uid(),name:name.trim(),desc:'',color:'#5b6b73',icon:'permit',folders:[],kw:[norm(name).slice(0,6)]});save();renderSettings()};
+  $('#clearDemo').onclick=()=>{const n=DB.items.filter(x=>(x.tags||[]).includes('демо')).length;if(!n)return toast('Демо-записей нет');if(confirm(`Удалить ${n} демо-записей?`)){DB.items=DB.items.filter(x=>!(x.tags||[]).includes('демо'));save();renderSettings();toast('Демо-записи удалены')}};
+  $('#resetAll').onclick=()=>{if(confirm('Удалить ВСЕ записи и вернуть настройки по умолчанию?')&&confirm('Точно? Это нельзя отменить.')){DB={items:[],themes:JSON.parse(JSON.stringify(DEFAULT_THEMES)),types:[...DEFAULT_TYPES]};save();go('home')}};
+}
+
+function renderProject(){
+  const goals=[['G1','Найти документ за один запрос','До 30 секунд на запрос'],['G2','Единый каталог по темам','Доля перенесённых документов'],['G3','Не пропускать сроки','Нет просрочек без пометки'],['G4','Встречи, решения, поручения','Доля встреч с решениями'],['G5','База материалов с сайта компании','Число проверенных карточек']];
+  const status=[['Главная, темы, папки климата, каталог, поиск, фильтры, теги','done'],['Загрузка файлов, извлечение текста, автоподбор темы','check'],['Сроки действия','done'],['Встречи и собрания','done'],['Настройка тем, типов, тегов; импорт; CSV','done'],['Исключение темы «Промышленная безопасность»','done'],['Наполнение материалами с сайта «КазМунайГаз»','todo']];
+  const sb={done:'<span class="badge ok">Реализовано</span>',check:'<span class="badge review">Требует проверки</span>',todo:'<span class="badge late">Не выполнено</span>'};
+  const flow=[['Источники','Рабочие файлы\nСайт компании\nВстречи'],['Загрузка','Перетаскивание\nИмпорт списка\nКарточка по ссылке'],['Обработка','Извлечение текста\nАвтоподбор темы\nТеги'],['Справочник','11 тем · папки\n4 вида записей'],['Использование','Поиск и фильтры\nСроки · Встречи\nВыгрузка CSV']];
+  const W=1100,bw=190,gap=(W-bw*5)/4;
+  const svg=`<svg class="arch" viewBox="0 0 ${W} 170" role="img" aria-label="Поток данных справочника">
+    <defs><marker id="ar" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--muted)"/></marker></defs>
+    ${flow.map(([h,b],i)=>{const x=i*(bw+gap);const hi=i===3;return `<g><rect x="${x}" y="10" width="${bw}" height="150" rx="14" fill="${hi?'var(--navy)':'var(--surface)'}" stroke="${hi?'var(--amber)':'var(--line)'}" stroke-width="${hi?2:1}"/>
+      <text x="${x+bw/2}" y="44" text-anchor="middle" font-family="Literata,serif" font-weight="600" font-size="18" fill="${hi?'#fff':'var(--ink)'}">${h}</text>
+      ${b.split('\n').map((l,j)=>`<text x="${x+bw/2}" y="${80+j*24}" text-anchor="middle" font-size="14" fill="${hi?'#b9cdd6':'var(--muted)'}">${esc(l)}</text>`).join('')}
+      ${i<4?`<line x1="${x+bw+4}" y1="85" x2="${x+bw+gap-6}" y2="85" stroke="var(--muted)" stroke-width="1.6" marker-end="url(#ar)"/>`:''}</g>`}).join('')}
+  </svg>`;
+  const road=[['Этап 1 · Запуск (сейчас)','#0f7a6c',['Проверить загрузку PDF, Word, Excel на 5–10 реальных документах','Заполнить сроки у действующих разрешений и договоров']],
+    ['Этап 2 · Наполнение','#f2a93b',['Подключить расширение Claude in Chrome','Собрать экологические материалы сайта компании по темам','Проверить карточки и сменить статус на «Проверено»']],
+    ['Этап 3 · Развитие','#7058c4',['Напоминания о сроках по почте или в мессенджере','Поручения со встреч — на страницу «Сроки»','Папки внутри других тем','Хранение оригиналов Word и Excel','Роли и доступ к отдельным темам']]];
+  const formats=[['PDF','Файл целиком','Да, при текстовом слое'],['Изображения','Файл целиком','Нет'],['TXT, MD, CSV, JSON','Файл целиком','Да'],['Word (.docx)','Текстовая копия','Да'],['Excel (.xlsx, .xls)','Текстовая копия (CSV)','Да'],['Прочие (DWG, ZIP, PPTX)','Только запись','По названию и заметкам']];
+  const acc=['Любая тема и папка климата — за два клика с главной','PDF с текстовым слоем находится по слову из середины текста','Темы «Промышленная безопасность» нигде нет','Будущая встреча видна на главной и в «Предстоящих»','Документ со сроком < 90 дней — на «Сроках» и на главной','Импорт 10 строк создаёт 10 карточек «Требует проверки»','Переименование тега меняет его во всех записях','Читатель не видит кнопок изменения'];
+  app.innerHTML=`<div class="wrap">
+  <div class="page-head"><h1>О проекте</h1><p class="muted">Визуальное резюме PRD «Цифровой справочник эколога», версия 1.0 от 12.10.2026.</p></div>
+  <section class="block"><div class="block-head"><h2>Проблема</h2></div><div class="panel"><p style="margin:0">Документы, внешние материалы и записи встреч разбросаны по папкам на рабочем столе. Чтобы найти нужное, приходится вспоминать, где оно лежит, и открывать файлы по одному. Справочник собирает всё в один каталог по темам с полнотекстовым поиском, контролем сроков и журналом встреч.</p></div></section>
+  <section class="block"><div class="block-head"><h2>Как устроен справочник</h2></div><div class="panel" style="overflow-x:auto"><div style="min-width:720px">${svg}</div></div></section>
+  <section class="block"><div class="block-head"><h2>Цели</h2></div><div class="goal-grid">${goals.map(([k,t,m])=>`<div class="goal"><b>${k}</b><p>${t}</p><small>${m}</small></div>`).join('')}</div></section>
+  <section class="block"><div class="block-head"><h2>Пользователи</h2></div><div class="goal-grid">
+    <div class="goal"><p>Эколог</p><small>Загружает файлы, ищет, следит за сроками, ведёт встречи</small></div>
+    <div class="goal"><p>Коллега с правом записи</p><small>Добавляет и правит карточки</small></div>
+    <div class="goal"><p>Читатель</p><small>Ищет и открывает материалы</small></div></div></section>
+  <section class="block"><div class="block-head"><h2>Статус реализации</h2></div><div class="status-list">${status.map(([t,s])=>`<div class="status-row"><span>${t}</span>${sb[s]}</div>`).join('')}</div></section>
+  <section class="block"><div class="block-head"><h2>Форматы файлов</h2></div><div class="tbl-wrap"><table class="tbl"><thead><tr><th>Формат</th><th>Хранение</th><th>Поиск по тексту</th></tr></thead><tbody>${formats.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>
+    <p class="muted" style="font-size:13px">Лимиты: файл до 20 МБ, в индекс попадают первые 30 000 символов. В этом локальном прототипе текст извлекается из TXT, MD, CSV, JSON; для остальных форматов создаётся запись.</p></section>
+  <section class="block"><div class="block-head"><h2>Дорожная карта</h2></div><div class="road">${road.map(([h,c,l])=>`<div class="stage" style="--c:${c}"><h3>${h}</h3><ul>${l.map(x=>`<li>${x}</li>`).join('')}</ul></div>`).join('')}</div></section>
+  <section class="block"><div class="block-head"><h2>Критерии приёмки</h2></div><div class="cols">${acc.map((a,i)=>`<div class="status-row"><span><b style="color:var(--accent)">${i+1}.</b> ${a}</span></div>`).join('')}</div></section>
+  <section class="block"><div class="block-head"><h2>Открытые вопросы</h2></div><div class="panel"><ol style="margin:0;padding-left:20px">
+    <li>Какие разделы сайта компании использовать как источник?</li><li>Нужны ли материалы регуляторов и отраслевых организаций?</li><li>Кто ещё получит доступ и с какими правами?</li><li>Нужны ли напоминания о сроках вне сайта?</li><li>Каким должен быть список организаций для фильтра?</li></ol></div></section>
+  </div>`;
+}
+
+/* ============ Роутер ============ */
+const ROUTES={home:renderHome,catalog:renderCatalog,meetings:renderMeetings,deadlines:renderDeadlines,settings:renderSettings,project:renderProject};
+let CUR='home';
+function route(r){
+  r=r||CUR; if(!ROUTES[r]) r='home'; CUR=r;
+  document.querySelectorAll('nav.main a').forEach(a=>a.classList.toggle('on',a.dataset.r===r));
+  ROUTES[r](); updateStorage();
+}
+function go(r){ CUR=r; try{ history.replaceState(null,'','#'+r); }catch(e){} route(r); window.scrollTo(0,0); }
+document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();go(a.getAttribute('href').slice(1))}));
+document.addEventListener('click',e=>{const a=e.target.closest('#app a[href^="#"]');if(a){e.preventDefault();go(a.getAttribute('href').slice(1))}});
+const rerender=()=>route();
+
+/* ============ Боковая панель ============ */
+let drawerPrev=null;
+function openDrawer(title,body,foot){
+  drawerPrev=document.activeElement;
+  $('#drawerTitle').textContent=title; $('#drawerBody').innerHTML=body; $('#drawerFoot').innerHTML=foot||'';
+  $('#drawer').classList.add('on'); $('#scrim').classList.add('on');
+  setTimeout(()=>{const f=$('#drawerBody input, #drawerBody textarea, #drawerClose');f&&f.focus()},60);
+}
+function closeDrawer(){ $('#drawer').classList.remove('on'); $('#scrim').classList.remove('on'); drawerPrev&&drawerPrev.focus&&drawerPrev.focus(); }
+$('#drawerClose').onclick=closeDrawer; $('#scrim').onclick=closeDrawer;
+
+function viewItem(id){
+  const it=DB.items.find(x=>x.id===id); if(!it) return;
+  const th=themeById(it.theme); const rows=[];
+  const add=(k,v)=>{if(v)rows.push(`<dt>${k}</dt><dd>${v}</dd>`)};
+  add('Вид',KINDS[it.kind].name); add('Тема',th?esc(th.name)+(it.folder?' / '+esc(it.folder):''):'');
+  add('Тип',esc(it.type)); add('Год',esc(it.year)); add('Организация',esc(it.org));
+  if(it.kind==='external'){add('Источник',esc(it.source)); const u=safeUrl(it.url); add('Ссылка',u?`<a href="${esc(u)}" target="_blank" rel="noopener noreferrer">${esc(u)}</a>`:''); add('Статус',it.status==='verified'?'Проверено по источнику':'Требует проверки');}
+  if(it.kind==='meeting'){add('Дата',fmtDate(it.date)+(it.time?', '+esc(it.time):'')+' '+meetingBadge(it)); add('Место / формат',esc(it.place)); add('Участники',esc(it.participants)); add('Повестка',esc(it.agenda)); add('Решения',esc(it.decisions)); add('Поручения и сроки',esc(it.tasks));}
+  else add('Описание',esc(it.desc));
+  add('Срок действия до',it.expires?fmtDate(it.expires)+' '+deadlineBadge(it):'');
+  add('Где лежит оригинал',esc(it.original)); add('Файл',esc(it.fileName)); add('Заметки',esc(it.notes));
+  add('Теги',(it.tags||[]).map(t=>'#'+esc(t)).join(' '));
+  if(it.text) add('Текст документа',`<div style="max-height:240px;overflow:auto;background:var(--surface-2);padding:8px 10px;border-radius:8px;font-size:13px">${esc(it.text.slice(0,4000))}${it.text.length>4000?'…':''}</div>`);
+  openDrawer(it.title,`<div class="view"><dl>${rows.join('')}</dl></div>`,
+    `<button class="btn primary" id="dEdit">Редактировать</button>${it.kind==='external'&&it.status!=='verified'?'<button class="btn" id="dVerify">Отметить «Проверено»</button>':''}<button class="btn danger" id="dDel" style="margin-left:auto">Удалить</button>`);
+  $('#dEdit').onclick=()=>editItem(it);
+  const v=$('#dVerify'); if(v) v.onclick=()=>{it.status='verified';save();rerender();viewItem(id);toast('Отмечено как проверенное')};
+  $('#dDel').onclick=e=>{const b=e.target; if(b.dataset.c){DB.items=DB.items.filter(x=>x.id!==id);save();closeDrawer();rerender();toast('Запись удалена')} else {b.dataset.c=1;b.textContent='Нажмите ещё раз для удаления';b.classList.add('primary');setTimeout(()=>{if(b.isConnected){delete b.dataset.c;b.textContent='Удалить';b.classList.remove('primary')}},3500)}};
+}
+
+function editItem(it){
+  const isNew=!it.id; it=Object.assign({kind:'external',tags:[],status:'review',theme:S.theme||'',folder:S.folder||''},it);
+  const k=it.kind, F=(id,label,html)=>`<div class="field"><label for="${id}">${label}</label>${html}</div>`;
+  const inp=(id,v,type='text',ph='')=>`<input id="${id}" type="${type}" value="${esc(v??'')}" placeholder="${esc(ph)}">`;
+  const ta=(id,v,ph='')=>`<textarea id="${id}" placeholder="${esc(ph)}">${esc(v??'')}</textarea>`;
+  const themeSel=`<select id="eTheme"><option value="">— без темы —</option>${DB.themes.map(t=>`<option value="${t.id}"${it.theme===t.id?' selected':''}>${esc(t.name)}</option>`).join('')}</select>`;
+  const typeSel=`<select id="eType"><option value="">—</option>${DB.types.map(t=>`<option${it.type===t?' selected':''}>${esc(t)}</option>`).join('')}</select>`;
+  let body=`${isNew?F('eKind','Вид записи',`<select id="eKind">${Object.entries(KINDS).map(([kk,v])=>`<option value="${kk}"${kk===k?' selected':''}>${v.name}</option>`).join('')}</select>`):''}
+    ${F('eTitle','Название *',inp('eTitle',it.title))}
+    <div class="row2">${F('eTheme','Тема',themeSel)}<div class="field" id="folderWrap"></div></div>`;
+  if(k==='meeting'){
+    body+=`<div class="row2">${F('eDate','Дата *',inp('eDate',it.date||iso(today()),'date'))}${F('eTime','Время',inp('eTime',it.time,'time'))}</div>
+      ${F('ePlace','Место или формат',inp('ePlace',it.place,'text','Переговорная, онлайн…'))}
+      ${F('eParts','Участники',ta('eParts',it.participants))}${F('eAgenda','Повестка',ta('eAgenda',it.agenda))}
+      ${F('eDec','Решения',ta('eDec',it.decisions))}${F('eTasks','Поручения и сроки',ta('eTasks',it.tasks,'Что, кто, до какого числа'))}`;
+  } else {
+    body+=`${F('eDesc',k==='external'?'Краткое описание своими словами':'Описание',ta('eDesc',it.desc))}
+      <div class="row2">${F('eType','Тип',typeSel)}${F('eYear','Год',inp('eYear',it.year,'number'))}</div>
+      ${F('eOrg','Организация',inp('eOrg',it.org))}`;
+    if(k==='external') body+=`${F('eUrl','Ссылка (http/https)',inp('eUrl',it.url,'url','https://'))}<div class="row2">${F('eSrc','Источник',inp('eSrc',it.source))}${F('eStatus','Статус',`<select id="eStatus"><option value="review">Требует проверки</option><option value="verified"${it.status==='verified'?' selected':''}>Проверено по источнику</option></select>`)}</div>`;
+    if(k==='doc') body+=`<div class="row2">${F('eExp','Срок действия до',inp('eExp',it.expires,'date'))}${F('eOrig','Где лежит оригинал',inp('eOrig',it.original,'text','Шкаф, папка, № дела'))}</div>`;
+  }
+  body+=`${F('eTags','Теги (через запятую)',inp('eTags',(it.tags||[]).join(', ')))}<div class="suggest" id="tagSug"></div>${F('eNotes','Заметки',ta('eNotes',it.notes))}`;
+  openDrawer(isNew?'Новая запись':'Редактирование',body,`<button class="btn primary" id="eSave">Сохранить</button><button class="btn" id="eCancel">Отмена</button>`);
+  const fw=()=>{const th=themeById($('#eTheme').value);$('#folderWrap').innerHTML=th&&th.folders.length?`<label for="eFolder">Папка</label><select id="eFolder"><option value="">— все —</option>${th.folders.map(f=>`<option${it.folder===f?' selected':''}>${esc(f)}</option>`).join('')}</select>`:''};
+  fw(); $('#eTheme').onchange=fw;
+  if(isNew) $('#eKind').onchange=e=>{const snap=collect();snap.kind=e.target.value;editItem(snap)};
+  const sug=()=>{const cur=$('#eTags').value.split(',').map(s=>s.trim().toLowerCase());const last=cur[cur.length-1]||'';
+    const pool=[...new Set([...tagCounts(DB.items).map(x=>x[0]),...PRESET_TAGS])].filter(t=>!cur.includes(t.toLowerCase())&&(!last||norm(t).startsWith(norm(last)))).slice(0,12);
+    $('#tagSug').innerHTML=pool.map(t=>`<button type="button" class="tag" data-sug="${esc(t)}">+ ${esc(t)}</button>`).join('')};
+  sug(); $('#eTags').oninput=sug;
+  $('#tagSug').onclick=e=>{const b=e.target.closest('[data-sug]');if(!b)return;const parts=$('#eTags').value.split(',').map(s=>s.trim()).filter(Boolean);
+    const last=parts.length&&!PRESET_TAGS.concat(tagCounts(DB.items).map(x=>x[0])).includes(parts[parts.length-1])?parts.pop():null;parts.push(b.dataset.sug);$('#eTags').value=parts.join(', ')+', ';sug();$('#eTags').focus()};
+  function collect(){
+    const v=id=>{const el=$('#'+id);return el?el.value.trim():undefined};
+    const o=Object.assign({},it,{title:v('eTitle'),theme:v('eTheme'),folder:v('eFolder')||'',tags:[...new Set((v('eTags')||'').split(',').map(s=>s.trim()).filter(Boolean))],notes:v('eNotes')});
+    if(k==='meeting') Object.assign(o,{date:v('eDate'),time:v('eTime'),place:v('ePlace'),participants:v('eParts'),agenda:v('eAgenda'),decisions:v('eDec'),tasks:v('eTasks')});
+    else { Object.assign(o,{desc:v('eDesc'),type:v('eType'),year:v('eYear')?Number(v('eYear')):'',org:v('eOrg')});
+      if(k==='external') Object.assign(o,{url:v('eUrl'),source:v('eSrc'),status:v('eStatus')});
+      if(k==='doc') Object.assign(o,{expires:v('eExp'),original:v('eOrig')}); }
+    return o;
+  }
+  $('#eCancel').onclick=()=>isNew?closeDrawer():viewItem(it.id);
+  $('#eSave').onclick=()=>{
+    const o=collect();
+    if(!o.title) return toast('Укажите название');
+    if(k==='meeting'&&!o.date) return toast('Укажите дату встречи');
+    if(k==='external'&&o.url&&!safeUrl(o.url)) return toast('Ссылка должна начинаться с http:// или https://');
+    if(isNew){o.id=uid();o.created=Date.now();DB.items.push(o)} else {const i=DB.items.findIndex(x=>x.id===o.id);DB.items[i]=o}
+    save(); rerender(); viewItem(o.id); toast('Сохранено');
+  };
+}
+
+/* ============ Загрузка файлов ============ */
+function guessTheme(name,text){
+  const h=norm(name+' '+(text||'').slice(0,2000));
+  let best=null,score=0;
+  DB.themes.forEach(t=>{const s=(t.kw||[]).reduce((a,k)=>a+(h.includes(k)?1:0),0);if(s>score){score=s;best=t}});
+  let folder='';
+  if(best&&best.folders.length){ const f=best.folders.find(f=>h.includes(norm(f))||(f==='CCUS'&&/улавлив|захорон/.test(h))); folder=f||''; }
+  return {theme:best?best.id:'',folder};
+}
+async function handleFiles(files){
+  files=[...files]; if(!files.length) return;
+  openDrawer('Загрузка файлов',`<p>Обработано <b id="upN">0</b> из ${files.length}</p><div class="progress"><div id="upBar"></div></div><ul id="upLog" style="padding-left:18px;font-size:14px"></ul>`,`<button class="btn primary" id="upDone" disabled>Готово</button>`);
+  let n=0;
+  for(const f of files){
+    const ext=(f.name.split('.').pop()||'').toLowerCase(); let text='',note='';
+    if(f.size>MAX_FILE){ note='пропущен: больше 20 МБ'; }
+    else {
+      if(TEXT_EXT.includes(ext)){ try{ text=(await f.text()).slice(0,MAX_TEXT); note='текст извлечён'; }catch(e){ note='не удалось прочитать'; } }
+      else note='создана запись, текст в прототипе не извлекается';
+      const g=S.theme?{theme:S.theme,folder:S.folder}:guessTheme(f.name,text);
+      DB.items.push({id:uid(),kind:'doc',created:Date.now(),title:f.name.replace(/\.[^.]+$/,''),fileName:f.name,desc:'',theme:g.theme,folder:g.folder,type:'',year:new Date(f.lastModified||Date.now()).getFullYear(),tags:[],text,original:''});
+      const th=themeById(g.theme); note+=th?` · тема: ${th.name}${g.folder?' / '+g.folder:''}`:' · тема не определена';
+    }
+    n++; $('#upN').textContent=n; $('#upBar').style.width=(n/files.length*100)+'%';
+    $('#upLog').insertAdjacentHTML('beforeend',`<li><b>${esc(f.name)}</b> — <span class="muted">${esc(note)}</span></li>`);
+  }
+  save(); rerender(); const d=$('#upDone'); d.disabled=false; d.onclick=closeDrawer; toast(`Добавлено файлов: ${n}`);
+}
+$('#fileInput').onchange=e=>{handleFiles(e.target.files);e.target.value=''};
+let dragN=0;
+addEventListener('dragenter',e=>{if(e.dataTransfer&&[...e.dataTransfer.types].includes('Files')){dragN++;$('#dropzone').classList.add('on')}});
+addEventListener('dragleave',()=>{dragN=Math.max(0,dragN-1);if(!dragN)$('#dropzone').classList.remove('on')});
+addEventListener('dragover',e=>e.preventDefault());
+addEventListener('drop',e=>{e.preventDefault();dragN=0;$('#dropzone').classList.remove('on');if(e.dataTransfer.files.length)handleFiles(e.dataTransfer.files)});
+
+/* ============ Импорт / экспорт ============ */
+function findThemeByName(s){
+  if(!s) return {theme:'',folder:''}; const [a,b]=String(s).split('/').map(x=>x.trim());
+  const t=DB.themes.find(t=>norm(t.name)===norm(a))||DB.themes.find(t=>norm(t.name).includes(norm(a)));
+  const folder=t&&b?(t.folders.find(f=>norm(f)===norm(b))||''):'';
+  return {theme:t?t.id:'',folder};
+}
+function openImport(){
+  openDrawer('Импорт списка',`<p class="muted" style="margin-top:0">Строки вида<br><code>Название | Ссылка | Тема | Тип | Год | Организация | Теги | Описание</code><br>или JSON-массив объектов с полями title, url, theme, type, year, org, tags, desc. Тема с папкой: «Климат и декарбонизация / Метан». До 200 записей за раз; все получают статус «Требует проверки».</p>
+    <div class="field"><textarea id="impTa" rows="12" placeholder="Отчёт о выбросах 2025 | https://example.com | Климат и декарбонизация / Метан | Отчёт | 2025 | Компания | метан, ESG | Краткое описание"></textarea></div>`,
+    `<button class="btn primary" id="impGo">Импортировать</button>`);
+  $('#impGo').onclick=()=>{
+    const raw=$('#impTa').value.trim(); if(!raw) return toast('Вставьте список');
+    let rows=[];
+    try{
+      if(raw.startsWith('[')) rows=JSON.parse(raw).map(o=>({title:o.title||o['название'],url:o.url||o['ссылка'],theme:o.theme||o['тема'],type:o.type||o['тип'],year:o.year||o['год'],org:o.org||o['организация'],tags:Array.isArray(o.tags)?o.tags:String(o.tags||'').split(','),desc:o.desc||o.description||o['описание']}));
+      else rows=raw.split('\n').filter(l=>l.trim()).map(l=>{const p=l.split('|').map(s=>s.trim());return {title:p[0],url:p[1],theme:p[2],type:p[3],year:p[4],org:p[5],tags:(p[6]||'').split(','),desc:p.slice(7).join(' | ')}});
+    }catch(e){ return toast('Не удалось разобрать JSON'); }
+    rows=rows.filter(r=>r.title).slice(0,200);
+    rows.forEach(r=>{const g=findThemeByName(r.theme);DB.items.push({id:uid(),kind:'external',created:Date.now(),status:'review',title:String(r.title),url:safeUrl(r.url),theme:g.theme,folder:g.folder,type:DB.types.includes(r.type)?r.type:(r.type||''),year:Number(r.year)||'',org:r.org||'',tags:[...new Set(r.tags.map(s=>String(s).trim()).filter(Boolean))],desc:r.desc||'',source:'Импорт'})});
+    save(); closeDrawer(); rerender(); toast(`Импортировано записей: ${rows.length}`);
+  };
+}
+async function exportCSV(){
+  const cols=[['kind','Вид',v=>KINDS[v].name],['title','Название'],['theme','Тема',v=>(themeById(v)||{}).name||''],['folder','Папка'],['type','Тип'],['year','Год'],['org','Организация'],['tags','Теги',v=>(v||[]).join(', ')],['status','Статус',(v,it)=>it.kind==='external'?(v==='verified'?'Проверено':'Требует проверки'):''],['url','Ссылка'],['expires','Срок действия'],['date','Дата встречи'],['original','Где лежит оригинал'],['desc','Описание']];
+  const q=s=>'"'+String(s??'').replace(/"/g,'""')+'"';
+  const lines=[cols.map(c=>q(c[1])).join(';'),...DB.items.map(it=>cols.map(([k,,f])=>q(f?f(it[k],it):it[k])).join(';'))];
+  const blob=new Blob(['﻿'+lines.join('\r\n')],{type:'text/csv;charset=utf-8'});
+  const filename=`эко-справочник-${iso(today())}.csv`;
+  // Внутри claude.ai файл отдаётся через возможность downloads; локально — обычной ссылкой
+  const dl=window.claude&&window.claude.use?await window.claude.use('downloads').catch(()=>null):null;
+  if(dl){
+    try{ await dl.save({filename,data:blob}); toast('CSV сохранён'); }
+    catch(e){ if(e&&e.code==='rate_limited') toast('Подождите и попробуйте снова'); else if(e&&e.code!=='declined') toast('Выгрузка недоступна в этом окне'); }
+    return;
+  }
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=filename;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+}
+
+/* ============ Теги (настройка) ============ */
+function renameTag(oldT){
+  const nt=prompt(`Новое имя для тега «${oldT}». Если такой тег уже есть — теги объединятся.`,oldT); if(!nt||nt.trim()===oldT) return;
+  DB.items.forEach(it=>{if((it.tags||[]).includes(oldT)) it.tags=[...new Set(it.tags.map(t=>t===oldT?nt.trim():t))]});
+  save(); renderSettings(); toast('Тег обновлён во всех записях');
+}
+
+/* ============ Делегирование событий ============ */
+document.addEventListener('click',e=>{
+  const t=e.target;
+  const fo=t.closest('.tile [data-folder]'); if(fo){e.stopPropagation();resetFilters();S.theme=fo.dataset.theme;S.folder=fo.dataset.folder;return go('catalog')}
+  const tile=t.closest('.tile[data-theme]'); if(tile){resetFilters();S.theme=tile.dataset.theme;return go('catalog')}
+  const op=t.closest('[data-open]'); if(op) return viewItem(op.dataset.open);
+  const tg=t.closest('[data-tag]'); if(tg){const v=tg.dataset.tag;S.tags=S.tags.includes(v)?S.tags.filter(x=>x!==v):[...S.tags,v];if(CUR!=='catalog') return go('catalog');return renderCatalog()}
+  const kd=t.closest('[data-kind]'); if(kd){S.kind=kd.dataset.kind;return renderCatalog()}
+  const th=t.closest('[data-th]'); if(th){S.theme=th.dataset.th;S.folder='';return renderCatalog()}
+  const f2=t.closest('[data-fo]'); if(f2){S.folder=f2.dataset.fo;return renderCatalog()}
+  const rt=t.closest('[data-rentag]'); if(rt) return renameTag(rt.dataset.rentag);
+  const dt=t.closest('[data-deltag]'); if(dt){const v=dt.dataset.deltag;if(confirm(`Удалить тег «${v}» из всех записей?`)){DB.items.forEach(it=>it.tags=(it.tags||[]).filter(x=>x!==v));save();renderSettings()}return}
+  const dth=t.closest('[data-deltheme]'); if(dth){const th=DB.themes[dth.dataset.deltheme];const n=DB.items.filter(x=>x.theme===th.id).length;if(confirm(`Удалить тему «${th.name}»?${n?` ${n} записей останутся без темы.`:''}`)){DB.themes.splice(dth.dataset.deltheme,1);DB.items.forEach(x=>{if(x.theme===th.id){x.theme='';x.folder=''}});save();renderSettings()}return}
+  const act=t.closest('[data-act]'); if(act){const a=act.dataset.act;
+    if(a==='upload') $('#fileInput').click();
+    if(a==='import') openImport();
+    if(a==='export') exportCSV();
+    if(a==='new-external') editItem({kind:'external'});
+    if(a==='new-meeting') editItem({kind:'meeting'});
+  }
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'&&$('#drawer').classList.contains('on')) return closeDrawer();
+  if(e.key==='Enter'&&e.target.matches('[data-open],.tile[data-theme]')) { e.preventDefault(); e.target.click(); }
+  if(e.key==='/'&&!e.target.matches('input,textarea,select')){ e.preventDefault(); const q=$('#q')||$('#heroQ'); if(q) q.focus(); else { go('catalog'); setTimeout(()=>$('#q')&&$('#q').focus(),50);} }
+});
+$('#addBtn').onclick=()=>openDrawer('Добавить',`<div class="start" style="grid-template-columns:1fr">
+  <button data-act="upload"><b>Загрузить файлы</b><span class="muted">Документы попадут в подходящую тему автоматически</span></button>
+  <button data-act="new-external"><b>Внешний материал по ссылке</b><span class="muted">Описание своими словами и ссылка на источник</span></button>
+  <button id="newDoc"><b>Документ вручную</b><span class="muted">Со сроком действия и местом хранения оригинала</span></button>
+  <button id="newNote"><b>Заметка</b><span class="muted">Свободная запись</span></button>
+  <button data-act="new-meeting"><b>Встреча или собрание</b><span class="muted">Повестка, решения, поручения</span></button>
+  <button data-act="import"><b>Импорт списка</b><span class="muted">До 200 материалов за раз</span></button></div>`);
+document.addEventListener('click',e=>{if(e.target.closest('#newDoc'))editItem({kind:'doc'});if(e.target.closest('#newNote'))editItem({kind:'note'})});
+
+addEventListener('hashchange',()=>{const h=location.hash.slice(1);if(h&&h!==CUR){route(h);window.scrollTo(0,0)}});
+load(); route(location.hash.slice(1)||'home');
+</script>
+</body>
+</html>
